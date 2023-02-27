@@ -1,12 +1,18 @@
 export class Item {
+  private id: number;
   private name: string;
   private price: number;
   private color: string;
 
-  constructor(name: string, price: number, color: string) {
+  constructor(id: number = null, name: string, price: number, color: string) {
+    this.id = id;
     this.name = name;
     this.price = price;
     this.color = color;
+  }
+
+  getId(): number {
+    return this.id;
   }
 
   getName(): string {
