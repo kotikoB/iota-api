@@ -6,7 +6,7 @@ export class ItemsService {
   private items: Item[] = [];
 
   addItem(name: string, price: number, color: string) {
-    const itemId = Math.random();
+    const itemId = Math.floor(Math.random() * 100) + 1;
     const newItem = new Item(itemId, name, price, color);
     this.items.push(newItem);
     return newItem;
@@ -18,13 +18,7 @@ export class ItemsService {
   }
 
   getItem(itemId: number): Item {
-    const productIndex = this.items.findIndex(
-      (prod) => prod.getId() === itemId,
-    );
-    const product = this.items[productIndex];
-    if (!product) {
-      throw new NotFoundException('Could not find product.');
-    }
-    return product;
+    const item = this.items.find((item) => item.getId() === itemId);
+    return item;
   }
 }

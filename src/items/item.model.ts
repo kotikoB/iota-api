@@ -1,7 +1,12 @@
+import { ApiProperty } from '@nestjs/swagger';
+
 export class Item {
   private id: number;
+  @ApiProperty()
   private name: string;
+  @ApiProperty()
   private price: number;
+  @ApiProperty()
   private color: string;
 
   constructor(id: number = null, name: string, price: number, color: string) {
