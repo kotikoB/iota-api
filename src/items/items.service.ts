@@ -13,6 +13,7 @@ export class ItemsService {
   }
 
   getItems() {
+    // DB call here
     return [...this.items];
   }
 
