@@ -1,7 +1,23 @@
-import { Controller, Post, Body, Get, Param } from '@nestjs/common';
-import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import {
+  Controller,
+  Post,
+  Body,
+  Get,
+  Param,
+  ParseIntPipe,
+  Patch,
+  Put,
+} from '@nestjs/common';
+import {
+  ApiBadRequestResponse,
+  ApiCreatedResponse,
+  ApiNotFoundResponse,
+  ApiOkResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { CreateItemDto } from './dto/create-item.dto';
-import { Item } from './item.model';
+import { UpdateItemDto } from './dto/update-item.dto';
+import { Item } from './item.entity';
 import { ItemsService } from './items.service';
 
 @ApiTags('Items')
@@ -10,6 +26,7 @@ export class ItemsController {
   constructor(private readonly itemsService: ItemsService) {}
 
   @ApiCreatedResponse({ type: Item })
+  @ApiBadRequestResponse()
   @Post()
   addItem(@Body() createItemDto: CreateItemDto) {
     const generatedItem = this.itemsService.addItem(
@@ -27,8 +44,23 @@ export class ItemsController {
   }
 
   @ApiOkResponse({ type: Item })
+  @ApiNotFoundResponse()
   @Get(':id')
-  getItem(@Param('id') prodId: number): Item {
-    return this.itemsService.getItem(prodId);
+  getItem(@Param('id', ParseIntPipe) itemId: number): Promise<Item> {
+    return this.itemsService.getItem(itemId);
+  }
+
+  @ApiCreatedResponse({ type: Item })
+  @ApiBadRequestResponse()
+  @Put(':id')
+  updateItem(
+    @Param('id', ParseIntPipe) itemId: number,
+    @Body() updateItemDto: UpdateItemDto,
+  ) {
+    const generatedItem = this.itemsService.updateItem(
+      itemId,
+      updateItemDto.name,
+    );
+    return generatedItem;
   }
 }

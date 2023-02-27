@@ -1,23 +1,27 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
+@Entity()
 export class Item {
-  private id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
+
   @ApiProperty()
+  @Column()
   private name: string;
+
   @ApiProperty()
+  @Column()
   private price: number;
+
   @ApiProperty()
+  @Column()
   private color: string;
 
-  constructor(id: number = null, name: string, price: number, color: string) {
-    this.id = id;
+  constructor(name: string, price: number, color: string) {
     this.name = name;
     this.price = price;
     this.color = color;
-  }
-
-  getId(): number {
-    return this.id;
   }
 
   getName(): string {

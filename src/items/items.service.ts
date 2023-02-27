@@ -1,24 +1,38 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Item } from './item.model';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Item } from './item.entity';
 
 @Injectable()
 export class ItemsService {
+  constructor(
+    @InjectRepository(Item) private itemRepository: Repository<Item>,
+  ) {}
   private items: Item[] = [];
 
-  addItem(name: string, price: number, color: string) {
-    const itemId = Math.floor(Math.random() * 100) + 1;
-    const newItem = new Item(itemId, name, price, color);
-    this.items.push(newItem);
-    return newItem;
+  addItem(name: string, price: number, color: string): Promise<Item> {
+    const newItem = new Item(name, price, color);
+    return this.itemRepository.save(newItem);
   }
 
-  getItems() {
-    // DB call here
-    return [...this.items];
+  getItems(): Promise<Item[]> {
+    return this.itemRepository.find();
   }
 
-  getItem(itemId: number): Item {
-    const item = this.items.find((item) => item.getId() === itemId);
-    return item;
+  async getItem(itemId: number): Promise<Item> {
+    try {
+      const item = await this.itemRepository.findOneOrFail({
+        where: { id: itemId },
+      });
+      return item;
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  async updateItem(id: number, name: string): Promise<Item> {
+    const item = await this.getItem(id);
+    item.setName(name);
+    return this.itemRepository.save(item);
   }
 }
