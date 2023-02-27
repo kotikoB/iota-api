@@ -8,7 +8,6 @@ export class ItemsService {
   constructor(
     @InjectRepository(Item) private itemRepository: Repository<Item>,
   ) {}
-  private items: Item[] = [];
 
   addItem(name: string, price: number, color: string): Promise<Item> {
     const newItem = new Item(name, price, color);
