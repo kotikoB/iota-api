@@ -1,8 +1,11 @@
-import { Body, Controller, Get, Param, ParseIntPipe, Post } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, Param, ParseIntPipe, Post } from '@nestjs/common';
 import { ApiBadRequestResponse, ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { CreateEventDto } from './schema/create-event.dto';
+import { CreateEventDto } from './create-event.dto';
 import { CnEvent } from './event.entity';
 import { EventsService } from './events.service';
+import { eventSchemaValidator } from './create-event.schema';
+const Ajv = require('ajv');
+const ajv = new Ajv();
 
 @ApiTags('Events')
 @Controller('events')
@@ -13,6 +16,8 @@ export class EventsController {
     @ApiBadRequestResponse()
     @Post()
     addItem(@Body() createEventDto: CreateEventDto) {
+        const valid: boolean = ajv.validate(eventSchemaValidator, createEventDto);
+        if (!valid) throw new BadRequestException([...ajv.errors]);
         const generatedEvent = this.eventsService.addEvent(createEventDto.currentLocation, createEventDto.itemId);
         return generatedEvent;
     }

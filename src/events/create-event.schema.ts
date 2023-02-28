@@ -1,8 +1,4 @@
-import Ajv from 'ajv';
-
-const ajvInstance: Ajv = require('../../util/ajv-instance');
-
-const schema = {
+export const eventSchemaValidator = {
     type: 'object',
     properties: {
         currentLocation: { type: 'string' },

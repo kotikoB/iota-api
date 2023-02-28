@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get, Param, ParseIntPipe, Put } from '@nestjs/common';
+import { Controller, Post, Body, Get, Param, ParseIntPipe, Put, BadRequestException } from '@nestjs/common';
 import {
     ApiBadRequestResponse,
     ApiCreatedResponse,
@@ -7,9 +7,13 @@ import {
     ApiTags,
 } from '@nestjs/swagger';
 import { CreateItemDto } from './dto/create-item.dto';
+import { createItemSchemaValidator } from './dto/schema/create-item.schema';
+import { updateItemSchemaValidator } from './dto/schema/update-item.schema';
 import { UpdateItemDto } from './dto/update-item.dto';
 import { Item } from './item.entity';
 import { ItemsService } from './items.service';
+const Ajv = require('ajv');
+const ajv = new Ajv();
 
 @ApiTags('Items')
 @Controller('items')
@@ -20,6 +24,8 @@ export class ItemsController {
     @ApiBadRequestResponse()
     @Post()
     addItem(@Body() createItemDto: CreateItemDto) {
+        const valid: boolean = ajv.validate(createItemSchemaValidator, createItemDto);
+        if (!valid) throw new BadRequestException([...ajv.errors]);
         const generatedItem = this.itemsService.addItem(createItemDto.name, createItemDto.price, createItemDto.color);
         return generatedItem;
     }
@@ -41,6 +47,8 @@ export class ItemsController {
     @ApiBadRequestResponse()
     @Put(':id')
     updateItem(@Param('id', ParseIntPipe) itemId: number, @Body() updateItemDto: UpdateItemDto) {
+        const valid: boolean = ajv.validate(updateItemSchemaValidator, updateItemDto);
+        if (!valid) throw new BadRequestException([...ajv.errors]);
         const generatedItem = this.itemsService.updateItem(itemId, updateItemDto.name);
         return generatedItem;
     }
