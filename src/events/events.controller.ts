@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Param, ParseIntPipe, Post } from '@nestjs/common';
 import { ApiBadRequestResponse, ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { CreateEventDto } from './create-event.dto';
+import { CreateEventDto } from './schema/create-event.dto';
 import { CnEvent } from './event.entity';
 import { EventsService } from './events.service';
 
