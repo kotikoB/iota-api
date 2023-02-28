@@ -7,7 +7,7 @@ import { EventsModule } from './events/events.module';
 import config from 'ormconfig';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(config), ItemsModule, EventsModule],
+  imports: [ItemsModule, EventsModule, TypeOrmModule.forRoot(config)],
   controllers: [AppController],
   providers: [AppService],
 })
