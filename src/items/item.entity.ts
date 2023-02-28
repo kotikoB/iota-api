@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { CnEvent } from 'src/events/event.entity';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Item {
@@ -18,10 +19,17 @@ export class Item {
   @Column()
   private color: string;
 
+  @OneToMany(() => CnEvent, (event) => event.getItem)
+  private events: CnEvent[];
+
   constructor(name: string, price: number, color: string) {
     this.name = name;
     this.price = price;
     this.color = color;
+  }
+
+  getEvents(): CnEvent[] {
+    return this.events;
   }
 
   getName(): string {

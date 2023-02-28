@@ -1,11 +1,19 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  ParseIntPipe,
+  Post,
+} from '@nestjs/common';
 import {
   ApiBadRequestResponse,
   ApiCreatedResponse,
+  ApiOkResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { CreateItemDto } from 'src/items/dto/create-item.dto';
 import { CreateEventDto } from './create-event.dto';
+import { CnEvent } from './event.entity';
 import { EventsService } from './events.service';
 
 @ApiTags('Events')
@@ -22,5 +30,11 @@ export class EventsController {
       createEventDto.itemId,
     );
     return generatedEvent;
+  }
+
+  @ApiOkResponse({ type: CnEvent, isArray: true })
+  @Get(':itemId')
+  getAllItems(@Param('itemId', ParseIntPipe) _itemId: number) {
+    return this.eventsService.getItemEvents(_itemId);
   }
 }

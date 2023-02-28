@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Item } from 'src/items/item.entity';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class CnEvent {
@@ -11,8 +11,9 @@ export class CnEvent {
   @Column()
   private currentLocation: string;
 
-  @ApiProperty()
-  private item: Item;
+  @ApiProperty({ type: () => Item })
+  @ManyToOne(() => Item, (item) => item.getEvents, { onDelete: 'SET NULL' })
+  item: Item;
 
   constructor(currentLocation: string, item: Item) {
     this.currentLocation = currentLocation;
