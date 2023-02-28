@@ -13,7 +13,7 @@ export class CnEvent {
 
   @ApiProperty({ type: () => Item })
   @ManyToOne(() => Item, (item) => item.getEvents, { onDelete: 'SET NULL' })
-  item: Item;
+  private item: Item;
 
   constructor(currentLocation: string, item: Item) {
     this.currentLocation = currentLocation;
