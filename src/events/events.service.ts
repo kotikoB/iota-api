@@ -12,10 +12,10 @@ export class EventsService {
     private readonly itemsService: ItemsService,
   ) {}
 
-  async addEvent(name: string, itemId: number): Promise<CnEvent> {
+  async addEvent(currentLocation: string, itemId: number): Promise<CnEvent> {
     const item = await this.itemsService.getItem(itemId);
 
-    const newItem = new CnEvent(name, null);
+    const newItem = new CnEvent(currentLocation, item);
     return this.itemRepository.save(newItem);
   }
 }
