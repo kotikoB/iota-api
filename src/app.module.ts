@@ -7,8 +7,8 @@ import { EventsModule } from './events/events.module';
 import config from 'ormconfig';
 
 @Module({
-  imports: [ItemsModule, EventsModule, TypeOrmModule.forRoot(config)],
-  controllers: [AppController],
-  providers: [AppService],
+    imports: [ItemsModule, EventsModule, TypeOrmModule.forRoot(config)],
+    controllers: [AppController],
+    providers: [AppService],
 })
 export class AppModule {}
