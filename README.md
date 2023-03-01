@@ -30,5 +30,9 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 
+## Documentation
+`localhost:${port}/docs`
+
 ## Additional notes
 Once you run the application, sqlite will dreate a db file in the root directory, where all persistence will happen.
+
