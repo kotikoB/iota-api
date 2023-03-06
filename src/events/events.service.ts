@@ -18,11 +18,11 @@ export class EventsService {
         return this.eventRepository.save(event);
     }
 
-    async getItemEvents(_itemId: number): Promise<CnEvent[]> {
+    async getItemEvents(itemId: number): Promise<CnEvent[]> {
         return this.eventRepository
             .createQueryBuilder('event')
             .leftJoinAndSelect('event.item', 'item')
-            .where('event.itemId = :itemId', { itemId: _itemId })
+            .where('event.itemId = :itemId', { itemId: itemId })
             .getMany();
     }
 }

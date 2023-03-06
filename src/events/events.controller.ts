@@ -4,8 +4,8 @@ import { CreateEventDto } from './create-event.dto';
 import { CnEvent } from './event.entity';
 import { EventsService } from './events.service';
 import { eventSchemaValidator } from './create-event.schema';
-const Ajv = require('ajv');
-const ajv = new Ajv();
+import * as Ajv from 'ajv';
+const ajv = new Ajv.default({allErrors:true});
 
 @ApiTags('Events')
 @Controller('events')

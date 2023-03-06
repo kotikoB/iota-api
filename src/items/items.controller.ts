@@ -12,8 +12,9 @@ import { updateItemSchemaValidator } from './dto/schema/update-item.schema';
 import { UpdateItemDto } from './dto/update-item.dto';
 import { Item } from './item.entity';
 import { ItemsService } from './items.service';
-const Ajv = require('ajv');
-const ajv = new Ajv();
+
+import * as Ajv from 'ajv';
+const ajv = new Ajv.default({allErrors:true});
 
 @ApiTags('Items')
 @Controller('items')
